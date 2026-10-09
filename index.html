@@ -50,7 +50,73 @@ $("#form").addEventListener("submit",e=>{e.preventDefault();const v=$("#message"
 document.querySelectorAll("[data-command]").forEach(b=>b.addEventListener("click",()=>{const v=b.dataset.command;add(v,"user");runCommand(v);}));
 $("#speakToggle").addEventListener("click",()=>{voiceOn=!voiceOn;$("#speakToggle").textContent=voiceOn?"🔊  Sesli yanıt: Açık":"🔇  Sesli yanıt: Kapalı";if(!voiceOn&&"speechSynthesis"in window)speechSynthesis.cancel();});
 $("#mic").addEventListener("click",()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){reply("Bu tarayıcıda ses tanıma desteklenmiyor. Android'de Chrome ile HTTPS üzerinden açmayı veya mesaj yazarak kullanmayı dene.");return;}const rec=new SR();rec.lang="tr-TR";rec.interimResults=false;rec.maxAlternatives=1;$("#status").textContent="Dinliyorum";$("#orbWrap").classList.add("listening");rec.onresult=e=>{const v=e.results[0][0].transcript;add(v,"user");runCommand(v);};rec.onerror=()=>reply("Ses tanıma çalışmadı. Mikrofon iznini kontrol edip tekrar dene.");rec.onend=()=>{$("#status").textContent="Hazır";$("#orbWrap").classList.remove("listening");};try{rec.start();}catch(e){reply("Mikrofon başlatılamadı. Biraz bekleyip tekrar dene.");}});
-if("serviceWorker"in navigator&&location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+
+/* JARVIS: sesli uyandırma prototipi
+   Sayfa açıkken ve mikrofon izni verildiğinde çalışır. */
+let jarvisWakeRecognition = null;
+let jarvisWakeActive = false;
+
+function startJarvisWakeWord() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SR) {
+    reply("Bu tarayıcı sürekli sesli uyandırmayı desteklemiyor. Mikrofon düğmesini kullanabilirsin.");
+    return;
+  }
+
+  if (jarvisWakeActive) return;
+
+  jarvisWakeActive = true;
+  jarvisWakeRecognition = new SR();
+  jarvisWakeRecognition.lang = "tr-TR";
+  jarvisWakeRecognition.continuous = true;
+  jarvisWakeRecognition.interimResults = true;
+
+  jarvisWakeRecognition.onresult = (event) => {
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      if (!event.results[i].isFinal) continue;
+
+      const heard = event.results[i][0].transcript
+        .toLocaleLowerCase("tr-TR")
+        .trim();
+
+      if (heard.includes("jarvis")) {
+        jarvisWakeRecognition.stop();
+        reply("Buradayım! Seni dinliyorum.");
+        setTimeout(() => {
+          jarvisWakeActive = false;
+          startJarvisWakeWord();
+        }, 3000);
+        return;
+      }
+    }
+  };
+
+  jarvisWakeRecognition.onerror = () => {
+    jarvisWakeActive = false;
+  };
+
+  jarvisWakeRecognition.onend = () => {
+    if (jarvisWakeActive) {
+      setTimeout(() => {
+        try {
+          jarvisWakeRecognition.start();
+        } catch (e) {
+          // Tarayıcı yeniden dinlemeye izin vermeyebilir.
+        }
+      }, 1000);
+    }
+  };
+
+  try {
+    jarvisWakeRecognition.start();
+    reply("Jarvis sesli uyandırma denemesi başladı. Sayfayı açık tut.");
+  } catch (e) {
+    jarvisWakeActive = false;
+    reply("Dinleme başlatılamadı. Tekrar dene.");
+  }
+}
+  if("serviceWorker"in navigator&&location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
 </script>
 </body>
 </html>
