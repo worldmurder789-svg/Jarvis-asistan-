@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a1020">
+<meta name="description" content="Türkçe kişisel asistan JARVIS">
+<link rel="manifest" href="manifest.json">
+<title>JARVIS • Kişisel Asistan</title>
+<style>
+:root{color-scheme:dark;--bg:#080d19;--panel:#101a2c;--panel2:#14213a;--line:#243653;--text:#eef5ff;--muted:#9aabc5;--cyan:#62e5f5;--blue:#6798ff;--good:#9af2c1}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#19365a 0%,var(--bg) 55%);color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100dvh}
+.app{max-width:720px;margin:auto;padding:env(safe-area-inset-top) 18px calc(22px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;justify-content:space-between;padding:24px 2px 16px}.brand{display:flex;gap:11px;align-items:center}.brandmark{width:40px;height:40px;border:1px solid #4b7899;border-radius:14px;display:grid;place-items:center;color:var(--cyan);box-shadow:0 0 24px #42d7ef1f;font-size:21px}.eyebrow{color:var(--cyan);font-size:11px;letter-spacing:.2em;font-weight:800}.brand h1{font-size:19px;margin:2px 0 0;letter-spacing:.08em}.status{font-size:12px;color:var(--good);display:flex;align-items:center;gap:7px}.dot{width:7px;height:7px;border-radius:50%;background:var(--good);box-shadow:0 0 12px var(--good)}
+.hero{display:grid;justify-items:center;text-align:center;padding:28px 0 24px}.orb-wrap{width:190px;height:190px;display:grid;place-items:center;position:relative;margin-bottom:18px}.ring{position:absolute;border:1px solid #4f9bba55;border-radius:50%;inset:0;animation:spin 18s linear infinite}.ring:before,.ring:after{content:"";position:absolute;width:7px;height:7px;background:var(--cyan);border-radius:50%;top:20px;left:27px;box-shadow:0 0 15px var(--cyan)}.ring:after{top:auto;left:auto;bottom:22px;right:23px;background:var(--blue);box-shadow:0 0 15px var(--blue)}.ring.r2{inset:14px;border-style:dashed;animation-direction:reverse;animation-duration:26s}.orb{width:118px;height:118px;border-radius:50%;background:radial-gradient(circle at 35% 28%,#b4f9ff 0,#4fcde7 8%,#23618c 30%,#112846 62%,#0a1426 76%);box-shadow:0 0 28px #36c9ee55,0 0 70px #327dff25,inset 0 0 20px #8af4ff55;display:grid;place-items:center;border:1px solid #8deeff77}.orb span{font-size:30px;color:#e5fcff;text-shadow:0 0 16px #a8f7ff}.listening .orb{animation:pulse 1.2s ease-in-out infinite}.hero h2{font-size:23px;margin:0 0 7px}.hero p{color:var(--muted);margin:0;max-width:330px;line-height:1.5;font-size:14px}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{transform:scale(1.07);box-shadow:0 0 45px #36c9ee88,0 0 100px #327dff44}}
+.panel{background:linear-gradient(145deg,#111d31ed,#0e1728ed);border:1px solid var(--line);border-radius:22px;padding:16px;margin:14px 0;box-shadow:0 12px 34px #0002}.panel-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:13px;font-weight:750;letter-spacing:.04em}.hint{color:var(--muted);font-size:12px;font-weight:500}
+.chat{height:180px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:2px 0 8px}.bubble{max-width:88%;padding:11px 13px;border-radius:15px;font-size:14px;line-height:1.45;white-space:pre-wrap}.bot{align-self:flex-start;background:#182842;border:1px solid #29415f}.user{align-self:flex-end;background:#163e50;border:1px solid #286579}.composer{display:flex;gap:8px}.composer input{flex:1;min-width:0;background:#091221;border:1px solid #2b3c56;color:var(--text);border-radius:13px;padding:13px;font:inherit;outline:none}.composer input:focus{border-color:var(--cyan)}button{font:inherit;cursor:pointer;border:0}.send{background:var(--cyan);color:#06111d;font-weight:800;border-radius:13px;padding:0 17px}.microw{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.action{border:1px solid #2c4361;background:#15243a;color:var(--text);border-radius:14px;padding:12px 10px;font-size:13px}.action.primary{background:linear-gradient(120deg,#67e5f4,#82baff);color:#06111d;font-weight:800;border:0}.quickgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.quick{background:#111e32;border:1px solid #263a55;border-radius:15px;padding:14px;text-align:left;color:var(--text);min-height:78px}.quick .emoji{font-size:19px;display:block;margin-bottom:7px}.quick strong{font-size:13px;display:block}.quick small{color:var(--muted);font-size:11px;display:block;margin-top:3px}.note{font-size:12px;line-height:1.5;color:var(--muted)}footer{text-align:center;color:#71839e;font-size:11px;padding:14px 0 5px}
+@media(min-width:600px){.app{padding-left:26px;padding-right:26px}.quickgrid{grid-template-columns:repeat(4,1fr)}.orb-wrap{width:210px;height:210px}}
+</style>
+</head>
+<body>
+<main class="app" id="app">
+<header><div class="brand"><div class="brandmark">✦</div><div><div class="eyebrow">KİŞİSEL YAPAY ZEKÂ</div><h1>J.A.R.V.I.S.</h1></div></div><div class="status"><span class="dot"></span><span id="status">Hazır</span></div></header>
+<section class="hero"><div class="orb-wrap" id="orbWrap"><div class="ring"></div><div class="ring r2"></div><div class="orb"><span>✧</span></div></div><h2 id="greeting">Merhaba, hazırım.</h2><p>Ne yapmamı istersin? Konuşabilir veya aşağıya yazabilirsin.</p></section>
+<section class="panel"><div class="panel-title"><span>ASİSTAN SOHBETİ</span><span class="hint">Türkçe • Sesli yanıt</span></div><div class="chat" id="chat" aria-live="polite"><div class="bubble bot">Merhaba! Ben JARVIS. Şimdilik cihazındaki yerleşik ses özellikleriyle ve temel komutlarla çalışıyorum. Bana “saat kaç” ya da “YouTube'u aç” diyebilirsin.</div></div><form class="composer" id="form"><input id="message" autocomplete="off" placeholder="JARVIS'e bir şey söyle..." aria-label="Mesajın"><button class="send" type="submit">Gönder</button></form><div class="microw"><button class="action primary" id="mic">🎙️ &nbsp; Konuş</button><button class="action" id="speakToggle">🔊 &nbsp; Sesli yanıt: Açık</button></div></section>
+<section class="panel"><div class="panel-title"><span>HIZLI KOMUTLAR</span><span class="hint">Dokun ve çalıştır</span></div><div class="quickgrid">
+<button class="quick" data-command="Saat kaç?"><span class="emoji">◷</span><strong>Saat ve tarih</strong><small>Şu anı öğren</small></button>
+<button class="quick" data-command="YouTube'u aç"><span class="emoji">▷</span><strong>YouTube</strong><small>Uygulama veya site</small></button>
+<button class="quick" data-command="Google'da yapay zekâ araştır"><span class="emoji">⌕</span><strong>Web'de ara</strong><small>Google araması</small></button>
+<button class="quick" data-command="Bir dakika zamanlayıcı başlat"><span class="emoji">◴</span><strong>Zamanlayıcı</strong><small>1 dakikalık sayaç</small></button>
+</div></section>
+<section class="panel"><div class="panel-title"><span>GİZLİLİK VE KURULUM</span></div><p class="note">Mikrofon yalnızca Konuş düğmesine dokunduğunda etkinleştirilir. Bu demo, mesajlarını harici bir yapay zekâ servisine göndermez. Gerçek yapay zekâ sohbeti için güvenli bir sunucu/API bağlantısı eklenmelidir; API anahtarını bu sayfaya koyma. Ses tanıma desteği tarayıcıya göre değişebilir.</p></section>
+<footer>JARVIS • Android için kişisel asistan prototipi</footer>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+let voiceOn=true, timerId=null;
+function add(text,who="bot"){const el=document.createElement("div");el.className="bubble "+who;el.textContent=text;$("#chat").appendChild(el);$("#chat").scrollTop=$("#chat").scrollHeight;}
+function say(text){if(voiceOn&&"speechSynthesis"in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="tr-TR";u.rate=1; speechSynthesis.speak(u);}}
+function reply(text){add(text);say(text);$("#status").textContent="Hazır";$("#orbWrap").classList.remove("listening");}
+function runCommand(raw){const s=raw.toLocaleLowerCase("tr-TR").trim();if(!s)return;
+if(s.includes("saat")||s.includes("tarih")){const d=new Date();reply("Şu an "+new Intl.DateTimeFormat("tr-TR",{dateStyle:"full",timeStyle:"short"}).format(d)+".");return;}
+if(s.includes("youtube")){reply("YouTube'u açıyorum.");window.open("https://www.youtube.com/","_blank","noopener");return;}
+if(s.includes("google")||s.includes("araştır")||s.startsWith("ara ")){const q=s.replace("google'da","").replace("google da","").replace("araştır","").replace(/^ara\s*/,"").trim()||raw;reply("Web aramasını açıyorum.");window.open("https://www.google.com/search?q="+encodeURIComponent(q),"_blank","noopener");return;}
+if(s.includes("zamanlayıcı")||s.includes("zamanlayici")){if(timerId)clearTimeout(timerId);let mins=1;const m=s.match(/(\d+)\s*dakika/);if(m)mins=Math.min(180,Math.max(1,Number(m[1])));reply(mins+" dakikalık zamanlayıcı başlatıldı. Bu sayfa açık olduğu sürece çalışır.");timerId=setTimeout(()=>{reply("Zamanlayıcı tamamlandı!");},mins*60000);return;}
+if(s.includes("yardım")||s.includes("ne yapabilirsin")){reply("Saat ve tarihi söyleyebilir, YouTube'u açabilir, Google araması yapabilir ve sayfa açıkken zamanlayıcı başlatabilirim. Tam yapay zekâ için güvenli bir API bağlantısı gerekir.");return;}
+reply("Bu komut henüz bu prototipte tanımlı değil. Saat, YouTube, Google'da arama veya zamanlayıcı komutlarını deneyebilirsin.");}
+$("#form").addEventListener("submit",e=>{e.preventDefault();const v=$("#message").value.trim();if(!v)return;add(v,"user");$("#message").value="";runCommand(v);});
+document.querySelectorAll("[data-command]").forEach(b=>b.addEventListener("click",()=>{const v=b.dataset.command;add(v,"user");runCommand(v);}));
+$("#speakToggle").addEventListener("click",()=>{voiceOn=!voiceOn;$("#speakToggle").textContent=voiceOn?"🔊  Sesli yanıt: Açık":"🔇  Sesli yanıt: Kapalı";if(!voiceOn&&"speechSynthesis"in window)speechSynthesis.cancel();});
+$("#mic").addEventListener("click",()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){reply("Bu tarayıcıda ses tanıma desteklenmiyor. Android'de Chrome ile HTTPS üzerinden açmayı veya mesaj yazarak kullanmayı dene.");return;}const rec=new SR();rec.lang="tr-TR";rec.interimResults=false;rec.maxAlternatives=1;$("#status").textContent="Dinliyorum";$("#orbWrap").classList.add("listening");rec.onresult=e=>{const v=e.results[0][0].transcript;add(v,"user");runCommand(v);};rec.onerror=()=>reply("Ses tanıma çalışmadı. Mikrofon iznini kontrol edip tekrar dene.");rec.onend=()=>{$("#status").textContent="Hazır";$("#orbWrap").classList.remove("listening");};try{rec.start();}catch(e){reply("Mikrofon başlatılamadı. Biraz bekleyip tekrar dene.");}});
+if("serviceWorker"in navigator&&location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+</script>
+</body>
+</html>

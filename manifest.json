@@ -1,0 +1,12 @@
+{
+  "name": "JARVIS Kişisel Asistan",
+  "short_name": "JARVIS",
+  "description": "Türkçe kişisel asistan prototipi",
+  "lang": "tr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080d19",
+  "theme_color": "#0a1020",
+  "icons": []
+}
